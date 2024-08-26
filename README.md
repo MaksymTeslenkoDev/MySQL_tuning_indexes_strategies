@@ -327,7 +327,7 @@ Trafic
 ![Trafic](./images/mysql_perf/Traffic.png)
 
 Threads
-![Threads](./images/mysql_perf/Threads.png)
+![Threads](./images/mysql_perf/Threds.png)
 
 Tables
 ![Tables](./images/mysql_perf/Tables.png)

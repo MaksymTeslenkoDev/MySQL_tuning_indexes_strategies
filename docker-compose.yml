@@ -15,12 +15,12 @@ services:
       - mysql_data:/var/lib/mysql
     command: --innodb-buffer-pool-size=${INNODB_BUFFER_POOL_SIZE}
       --innodb-flush-log-at-trx-commit=${INNODB_FLUSH_LOG_AT_TRX_COMMIT}
-      --wait_timeout=6000
-      --net_write_timeout=6000
-      --net_read_timeout=6000
-      --innodb_lock_wait_timeout=6000
-      --mysqlx_read_timeout=6000
-      --interactive_timeout=6000
+      --wait_timeout=600
+      --net_write_timeout=600
+      --net_read_timeout=600
+      --innodb_lock_wait_timeout=600
+      --mysqlx_read_timeout=600
+      --interactive_timeout=600
     networks:
       - app-network
 
