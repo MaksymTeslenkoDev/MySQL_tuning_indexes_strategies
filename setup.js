@@ -6,12 +6,10 @@ const db = require('./db')(require('./knexfile'))('users');
 
 (async () => {
   try {
-    // Drop the table if it exists
     await db.query(`
         DROP TABLE IF EXISTS users;
       `);
 
-    // Create the table
     await db.query(`
         CREATE TABLE users (
           id INT PRIMARY KEY AUTO_INCREMENT,
@@ -24,7 +22,8 @@ const db = require('./db')(require('./knexfile'))('users');
     logger.log('Table users created');
   } catch (error) {
     logger.error(error);
+  } finally {
+    await db.close();
+    logger.log('Connection closed');
   }
-  await db.close();
-  logger.log('Connection closed');
 })();

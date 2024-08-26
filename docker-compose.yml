@@ -2,19 +2,95 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
-      MYSQL_DATABASE: ${MYSQL_DATABASE}           
-      MYSQL_USER: ${MYSQL_USER}                   
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}         
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
-      - mysql_data:/var/lib/mysql                 
-    command:
-      --innodb-buffer-pool-size=${INNODB_BUFFER_POOL_SIZE}
+      - mysql_data:/var/lib/mysql
+    command: --innodb-buffer-pool-size=${INNODB_BUFFER_POOL_SIZE}
       --innodb-flush-log-at-trx-commit=${INNODB_FLUSH_LOG_AT_TRX_COMMIT}
+      --wait_timeout=6000
+      --net_write_timeout=6000
+      --net_read_timeout=6000
+      --innodb_lock_wait_timeout=6000
+      --mysqlx_read_timeout=6000
+      --interactive_timeout=6000
+    networks:
+      - app-network
+
+  # app:
+  #   container_name: app
+  #   build: .
+  #   ports:
+  #     - '3000:3000'
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - mysql
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    env_file: .env
+    environment:
+      - INFLUX_HOST=localhost
+    ports:
+      - '${INFLUXDB_PORT}:${INFLUXDB_PORT}'
+    volumes:
+      - ./:/imports
+      - influxdb_data:/var/lib/influxdb
+    entrypoint: sh -c "influxd run -config /etc/influxdb/influxdb.conf & until influx -host localhost -execute 'CREATE DATABASE telegraf'; do echo waiting for influxdb; sleep 1; done; wait"
+    networks:
+      - app-network
+
+  telegraf:
+    container_name: telegraf
+    image: telegraf:1.29-alpine
+    env_file: .env
+    volumes:
+      - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - influxdb
+      - mysql
+    links:
+      - influxdb
+    ports:
+      - '${TELEGRAF_PORT}:${TELEGRAF_PORT}/udp'
+    networks:
+      - app-network
+    entrypoint: /bin/sh -c "chmod 666 /var/run/docker.sock && /entrypoint.sh telegraf"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:8.0.2
+    depends_on:
+      - influxdb
+    env_file: .env
+    links:
+      - influxdb
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+    networks:
+      - app-network
+
 volumes:
   mysql_data:
+  grafana_data: {}
+  influxdb_data: {}
+
+networks:
+  app-network:
+    driver: bridge
