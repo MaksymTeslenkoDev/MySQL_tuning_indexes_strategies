@@ -8,7 +8,7 @@ Dataset ~10M rows
 ## NO index 
 ### SELECT
 1. Request: ```siege -c50 -r10 -b http://0.0.0.0:3000/users/list```
-    Result: 
+    - Result: 
         - Transactions:                    500 hits
         - Availability:                 100.00 %
         - Elapsed time:                 223.00 secs
@@ -26,8 +26,8 @@ Dataset ~10M rows
 TOTAL_USERS_TO_INSERT=1000
 BATCH_SIZE=100
 1. Request: ```siege -c50 -r1 -b 'http://0.0.0.0:3000/users/insert POST' -H "Content-Type: text/plain"```
-    1.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0   
-        Result: 
+    - 1.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0   
+        - Result: 
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   0.65 secs
@@ -40,8 +40,8 @@ BATCH_SIZE=100
             - Failed transactions:               0
             - Longest transaction:            0.65
             - Shortest transaction:           0.28
-    1.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
-        Result:
+    - 1.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
+        - Result:
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   0.89 secs
@@ -54,8 +54,8 @@ BATCH_SIZE=100
             - Failed transactions:               0
             - Longest transaction:            0.89
             - Shortest transaction:           0.45
-    1.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
-        Result: 
+    - 1.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
+    -     Result: 
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   0.91 secs
@@ -69,8 +69,8 @@ BATCH_SIZE=100
             - Longest transaction:            0.91
             - Shortest transaction:           0.45
 2. Request: ```siege -c100 -r1 -b 'http://0.0.0.0:3000/users/insert POST' -H "Content-Type: text/plain"```
-    2.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0   
-        Result:
+    - 2.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0   
+        - Result:
             - Transactions:                    100 hits
             - Availability:                 100.00 %
             - Elapsed time:                   1.60 secs
@@ -84,8 +84,8 @@ BATCH_SIZE=100
             - Longest transaction:            1.59
             - Shortest transaction:           0.51
 
-    2.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
-        Result: 
+    - 2.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
+        - Result: 
             - Transactions:                    100 hits
             - Availability:                 100.00 %
             - Elapsed time:                   1.41 secs
@@ -99,8 +99,8 @@ BATCH_SIZE=100
             - Longest transaction:            1.41
             - Shortest transaction:           0.31
 
-    2.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
-        Result: 
+    - 2.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
+        - Result: 
             - Transactions:                    100 hits
             - Availability:                 100.00 %
             - Elapsed time:                   1.33 secs
@@ -117,7 +117,7 @@ BATCH_SIZE=100
 ## BTREE index
 ### SELECT
 1.  Request: ```siege -c100 -r10 -b http://0.0.0.0:3000/users/list```
-    Result: 
+    - Result: 
         - Transactions:                   1000 hits
         - Availability:                 100.00 %
         - Elapsed time:                  11.58 secs
@@ -131,7 +131,7 @@ BATCH_SIZE=100
         - Longest transaction:            2.61
         - Shortest transaction:           0.05
 2.  Request: ```siege -c50 -r10 -b http://0.0.0.0:3000/users/list```
-    Result: 
+    - Result: 
         - Transactions:                    500 hits
         - Availability:                 100.00 %
         - Elapsed time:                   6.65 secs
@@ -148,9 +148,9 @@ BATCH_SIZE=100
 ### INSERT
     TOTAL_USERS_TO_INSERT=1000
     BATCH_SIZE=100
-1.  Request: ```siege -c50 -r1 -b 'http://0.0.0.0:3000/users/insert POST' -H "Content-Type: text/plain"```
-    1.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0
-        Result: 
+1.  - Request: ```siege -c50 -r1 -b 'http://0.0.0.0:3000/users/insert POST' -H "Content-Type: text/plain"```
+    - 1.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0
+        - Result: 
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   6.40 secs
@@ -164,8 +164,8 @@ BATCH_SIZE=100
             - Longest transaction:            6.40
             - Shortest transaction:           5.59
 
-    1.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
-        Result: 
+    - 1.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
+        - Result: 
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   0.91 secs
@@ -179,8 +179,8 @@ BATCH_SIZE=100
             - Longest transaction:            0.91
             - Shortest transaction:           0.57
 
-    1.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
-        Result: 
+    - 1.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
+        - Result: 
             - Transactions:                     50 hits
             - Availability:                 100.00 %
             - Elapsed time:                   0.88 secs
@@ -195,11 +195,11 @@ BATCH_SIZE=100
             - Shortest transaction:           0.56
 
 2.  Request: ```siege -c100 -r1 -b 'http://0.0.0.0:3000/users/insert POST' -H "Content-Type: text/plain"```
-    2.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0
-        2.1.1 
+    - 2.1 INNODB_FLUSH_LOG_AT_TRX_COMMIT=0
+        - 2.1.1 
             TOTAL_USERS_TO_INSERT=1000
             BATCH_SIZE=100
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                   1.82 secs
@@ -212,10 +212,10 @@ BATCH_SIZE=100
                 - Failed transactions:               0
                 - Longest transaction:            1.82
                 - Shortest transaction:           0.64
-        2.1.2 
+        - 2.1.2 
             TOTAL_USERS_TO_INSERT=10000
             BATCH_SIZE=2000
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                  44.47 secs
@@ -229,11 +229,11 @@ BATCH_SIZE=100
                 - Longest transaction:           44.46
                 - Shortest transaction:          31.83
         
-    2.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
-        2.2.1 
+    - 2.2 INNODB_FLUSH_LOG_AT_TRX_COMMIT=1
+        - 2.2.1 
             TOTAL_USERS_TO_INSERT=1000
             BATCH_SIZE=100
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                   2.22 secs
@@ -246,10 +246,10 @@ BATCH_SIZE=100
                 - Failed transactions:               0
                 - Longest transaction:            2.21
                 - Shortest transaction:           0.48
-        2.2.2 
+        - 2.2.2 
             TOTAL_USERS_TO_INSERT=10000
             BATCH_SIZE=2000
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                 105.94 secs
@@ -262,11 +262,11 @@ BATCH_SIZE=100
                 - Failed transactions:               0
                 - Longest transaction:          105.94
                 - Shortest transaction:          93.88
-    2.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
-        2.3.1 
+    - 2.3 INNODB_FLUSH_LOG_AT_TRX_COMMIT=2
+        - 2.3.1 
             TOTAL_USERS_TO_INSERT=1000
             BATCH_SIZE=100
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                   1.93 secs
@@ -279,10 +279,10 @@ BATCH_SIZE=100
                 - Failed transactions:               0
                 - Longest transaction:            1.93
                 - Shortest transaction:           0.47
-        2.3.2 
+        - 2.3.2 
             TOTAL_USERS_TO_INSERT=10000
             BATCH_SIZE=2000
-            Result: 
+            - Result: 
                 - Transactions:                    100 hits
                 - Availability:                 100.00 %
                 - Elapsed time:                 120.73 secs
